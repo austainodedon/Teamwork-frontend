@@ -1,16 +1,50 @@
 import React from "react";
+import "./style.css";
 
 const Login = () => {
   return (
     <div>
-      <h2>Sign in</h2>
-      <p>Sign into your account</p>
-      <form className="form">
-        <div>
-          <input type="email" placeholder="Email Address" name="email" />
+      <form>
+        <div className="imgcontainer">
+          <img src="img_avatar2.png" alt="Avatar" className="avatar" />
         </div>
-        <div>
-          <input type="password" placeholder="Password" name="password" />
+
+        <div className="container">
+          <label for="uname">
+            <b>Username</b>
+          </label>
+          <input
+            type="text"
+            placeholder="Enter Username"
+            name="uname"
+            required
+          />
+
+          <label for="psw">
+            <b>Password</b>
+          </label>
+          <input
+            type="password"
+            placeholder="Enter Password"
+            name="psw"
+            required
+          />
+
+          <button type="submit">Login</button>
+          <label>
+            <input type="checkbox" checked="checked" name="remember" /> Remember
+            me
+          </label>
+        </div>
+
+        <div className="container">
+          <button type="button" class="cancelbtn">
+            Cancel
+          </button>
+
+          <span class="psw">
+            Forgot <a href="index.html">password?</a>
+          </span>
         </div>
       </form>
     </div>
