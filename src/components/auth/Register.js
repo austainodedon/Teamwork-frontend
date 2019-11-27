@@ -1,53 +1,178 @@
-import React from "react";
-import "./style.css";
+import React, { Fragment, useState } from "react";
+import { connect } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
+import { setAlert } from "../../actions/alert";
+import { register } from "../../actions/auth";
+import PropTypes from "prop-types";
 
-const Register = () => {
+const Register = ({ setAlert, register, isAuthenticated }) => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    gender: "",
+    jobRole: "",
+    department: "",
+    address: "",
+    avaterUrl: "",
+    userRole: ""
+  });
+
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    gender,
+    jobRole,
+    department,
+    address,
+    avaterUrl,
+    userRole
+  } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    register({
+      firstName,
+      lastName,
+      email,
+      password,
+      gender,
+      jobRole,
+      department,
+      address,
+      avaterUrl,
+      userRole
+    });
+  };
+
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
+
   return (
-    <div>
-      <form>
-        <div className="imgcontainer">
-          <img src="img_avatar2.png" alt="Avatar" className="avatar" />
-        </div>
-
-        <div className="container">
-          <label for="uname">
-            <b>Username</b>
-          </label>
+    <Fragment>
+      <h1 className="large text-primary">Sign Up</h1>
+      <p className="lead">
+        <i className="fas fa-user" /> Create Your Account
+      </p>
+      <form className="form" onSubmit={e => onSubmit(e)}>
+        <div className="form-group">
           <input
             type="text"
-            placeholder="Enter Username"
-            name="uname"
-            required
+            placeholder="First Name"
+            name="firstName"
+            value={firstName}
+            onChange={e => onChange(e)}
           />
-
-          <label for="psw">
-            <b>Password</b>
-          </label>
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Last Name"
+            name="lastName"
+            value={lastName}
+            onChange={e => onChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="email"
+            placeholder="Email Address"
+            name="email"
+            value={email}
+            onChange={e => onChange(e)}
+          />
+          <small className="form-text">
+            This site uses Gravatar so if you want a profile image, use a
+            Gravatar email
+          </small>
+        </div>
+        <div className="form-group">
           <input
             type="password"
-            placeholder="Enter Password"
-            name="psw"
-            required
+            placeholder="Password"
+            name="password"
+            value={password}
+            onChange={e => onChange(e)}
           />
-
-          <button type="submit">Login</button>
-          <label>
-            <input type="checkbox" checked="checked" name="remember" /> Remember
-            me
-          </label>
         </div>
-
-        <div className="container">
-          <button type="button" class="cancelbtn">
-            Cancel
-          </button>
-
-          <span class="psw">
-            Forgot <a href="index.html">password?</a>
-          </span>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Gender"
+            name="gender"
+            value={gender}
+            onChange={e => onChange(e)}
+          />
         </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Job Role"
+            name="jobRole"
+            value={jobRole}
+            onChange={e => onChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Department"
+            name="department"
+            value={department}
+            onChange={e => onChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Address"
+            name="address"
+            value={address}
+            onChange={e => onChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Avater Url"
+            name="avaterUrl"
+            value={avaterUrl}
+            onChange={e => onChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="User Role"
+            name="userRole"
+            value={userRole}
+            onChange={e => onChange(e)}
+          />
+        </div>
+        <input type="submit" className="btn btn-primary" value="Register" />
       </form>
-    </div>
+      <p className="my-1">
+        Already have an account? <Link to="/login">Sign In</Link>
+      </p>
+    </Fragment>
   );
 };
-export default Register;
+
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { setAlert, register })(Register);

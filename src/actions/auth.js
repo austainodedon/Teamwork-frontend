@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { setAlert } from './alert';
+import axios from "axios";
+import { setAlert } from "./alert";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -9,8 +9,8 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_PROFILE
-} from './types';
-import setAuthToken from '../utils/setAuthToken';
+} from "./types";
+import setAuthToken from "../utils/setAuthToken";
 
 // Load User
 export const loadUser = () => async dispatch => {
@@ -19,7 +19,9 @@ export const loadUser = () => async dispatch => {
   }
 
   try {
-    const res = await axios.get('/api/auth');
+    const res = await axios.get(
+      "https://backend-tw.herokuapp.com/api/v1/auth/signin"
+    );
 
     dispatch({
       type: USER_LOADED,
@@ -33,17 +35,43 @@ export const loadUser = () => async dispatch => {
 };
 
 // Register User
-export const register = ({ name, email, password }) => async dispatch => {
+export const register = ({
+  firstName,
+  lastName,
+  email,
+  password,
+  gender,
+  jobRole,
+  department,
+  address,
+  avaterUrl,
+  userRole
+}) => async dispatch => {
   const config = {
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     }
   };
 
-  const body = JSON.stringify({ name, email, password });
+  const body = JSON.stringify({
+    firstName,
+    lastName,
+    email,
+    password,
+    gender,
+    jobRole,
+    department,
+    address,
+    avaterUrl,
+    userRole
+  });
 
   try {
-    const res = await axios.post('/api/users', body, config);
+    const res = await axios.post(
+      "https://backend-tw.herokuapp.com/api/v1/auth/create-user",
+      body,
+      config
+    );
 
     dispatch({
       type: REGISTER_SUCCESS,
@@ -55,7 +83,7 @@ export const register = ({ name, email, password }) => async dispatch => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
     }
 
     dispatch({
@@ -68,14 +96,18 @@ export const register = ({ name, email, password }) => async dispatch => {
 export const login = (email, password) => async dispatch => {
   const config = {
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     }
   };
 
   const body = JSON.stringify({ email, password });
 
   try {
-    const res = await axios.post('/api/auth', body, config);
+    const res = await axios.post(
+      "https://backend-tw.herokuapp.com/api/v1/auth/signin",
+      body,
+      config
+    );
 
     dispatch({
       type: LOGIN_SUCCESS,
@@ -87,7 +119,7 @@ export const login = (email, password) => async dispatch => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
     }
 
     dispatch({
